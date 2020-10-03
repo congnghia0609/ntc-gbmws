@@ -77,7 +77,7 @@ func main() {
 
 	// Start epoll
 	var err error
-	epoller, err = MkEpoll()
+	epoller, err = mkEpoll()
 	if err != nil {
 		panic(err)
 	}

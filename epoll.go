@@ -22,8 +22,8 @@ type epoll struct {
 	lock        *sync.RWMutex
 }
 
-// MkEpoll new *epoll
-func MkEpoll() (*epoll, error) {
+// mkEpoll new *epoll
+func mkEpoll() (*epoll, error) {
 	fd, err := unix.EpollCreate1(0)
 	if err != nil {
 		return nil, err
