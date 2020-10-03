@@ -30,6 +30,31 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Start server
+func Start() {
+	for {
+		connections, err := epoller.Wait()
+		if err != nil {
+			log.Printf("Failed to epoll wait %v", err)
+			continue
+		}
+		for _, conn := range connections {
+			if conn == nil {
+				break
+			}
+			if _, _, err := wsutil.ReadClientData(conn); err != nil {
+				if err := epoller.Remove(conn); err != nil {
+					log.Printf("Failed to remove %v", err)
+				}
+				conn.Close()
+			} else {
+				// This is commented out since in demo usage, stdout is showing messages sent from > 1M connections at very high rate
+				//log.Printf("msg: %s", string(msg))
+			}
+		}
+	}
+}
+
 func main() {
 	// Increase resources limitations
 	var rlimit syscall.Rlimit
@@ -62,29 +87,5 @@ func main() {
 	http.HandleFunc("/", wsHandler)
 	if err := http.ListenAndServe("0.0.0.0:8000", nil); err != nil {
 		log.Fatal(err)
-	}
-}
-
-func Start() {
-	for {
-		connections, err := epoller.Wait()
-		if err != nil {
-			log.Printf("Failed to epoll wait %v", err)
-			continue
-		}
-		for _, conn := range connections {
-			if conn == nil {
-				break
-			}
-			if _, _, err := wsutil.ReadClientData(conn); err != nil {
-				if err := epoller.Remove(conn); err != nil {
-					log.Printf("Failed to remove %v", err)
-				}
-				conn.Close()
-			} else {
-				// This is commented out since in demo usage, stdout is showing messages sent from > 1M connections at very high rate
-				//log.Printf("msg: %s", string(msg))
-			}
-		}
 	}
 }
