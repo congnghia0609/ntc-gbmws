@@ -1,21 +1,26 @@
 # ntc-gbmws
-ntc-gbmws is a tool to benchmark resource WebSocket server by golang
+**ntc-gbmws** is a tool to benchmark resource WebSocket server by golang
 
 ## Environment
 Linux (Ubuntu, CentOS,...), Golang, Docker  
 
 ## Usage
 ```bash
+git clone git@github.com:congnghia0609/ntc-gbmws.git
+cd ./ntc-gbmws
+
+# Install library dependencies
 make deps
 
-# start server
+# Start server
 go run server.go epoll.go
 
-# start client
+# Start client
 go run client.go -conn=10000
 
 or
 
+# Start docker clients
 ./run_docker_clients.sh 10000 5 172.17.0.1
 docker ps
 ./destroy_docker.sh
