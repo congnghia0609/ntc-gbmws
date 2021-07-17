@@ -10,7 +10,11 @@ git clone git@github.com:congnghia0609/ntc-gbmws.git
 cd ./ntc-gbmws
 
 # Install library dependencies
-make deps
+#make deps
+go mod download
+
+# update go.mod file
+go mod tidy
 
 # Start server
 go run server.go epoll.go
@@ -22,17 +26,25 @@ or
 
 # Start docker clients
 ./run_docker_clients.sh 10000 5 172.17.0.1
+# List docker
 docker ps
+# Remove docker
 ./destroy_docker.sh
 ```
 
 ## Install library dependencies
 ```bash
-make deps
+# Install library dependencies
+#make deps
+go mod download
+
+# update go.mod file
+go mod tidy
 ```
 
 ## Build
 ```bash
+export GO111MODULE=on
 make build
 ```
 
@@ -70,7 +82,7 @@ docker ps
 ./destroy_docker.sh
 ```
 
-## Tool profile golang
+## Tool profiler golang
 ```bash
 # Install library dependencies
 sudo apt-get install graphviz
@@ -141,3 +153,7 @@ cat /proc/$(pidof server)/limits
 # Check log kern linux
 tail -f /var/log/kern.log
 ```
+
+
+## License
+This code is under the [Apache License v2](https://www.apache.org/licenses/LICENSE-2.0).  
